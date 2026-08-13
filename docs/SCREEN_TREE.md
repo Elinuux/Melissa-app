@@ -1,0 +1,37 @@
+# Arborescence des écrans
+
+- Première utilisation
+  - Bienvenue
+  - Objectifs
+  - Heure de départ
+  - Sport 3/4 séances
+  - Rappels
+- Aujourd’hui
+  - Soirée synthétique
+  - Prochaine activité
+  - Organiser ma soirée
+  - Résumé hebdomadaire
+  - Feuille d’action ouverte depuis une notification
+- Alternance
+  - Trouver une offre
+  - Recherches suggérées
+  - Plateformes officielles
+  - Ajouter une offre
+  - Mes candidatures
+  - Phase 2 : détail candidature / assistant / CV
+- Sport
+  - Séances proposées
+  - Mode séance plein écran
+  - Bilan rapide
+  - Phase 1 suivante : progression hebdomadaire détaillée
+- English
+  - Évaluation 20 questions
+  - Correction immédiate
+  - Résultat + erreurs
+  - Mémoire des catégories faibles
+  - Phase 3 : oral
+- Profil
+  - Rappels iPhone
+  - Test de notification
+  - Export / suppression des données
+  - Déconnexion

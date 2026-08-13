@@ -1,0 +1,14 @@
+import type { SportSession } from '../types';
+export const sportSessions:SportSession[]=[
+{id:'easy30',title:'Course facile — 30 min',duration:30,type:'Course facile',blocks:[{label:'Échauffement marche active',seconds:300},{label:'Course facile',seconds:1200,note:'Allure confortable, conversation possible'},{label:'Retour au calme',seconds:300}]},
+{id:'mix35',title:'Course + renforcement — 35 min',duration:35,type:'Course + exercices',blocks:[{label:'Échauffement',seconds:300},{label:'Course facile',seconds:600},{label:'Squats',seconds:40},{label:'Repos',seconds:20},{label:'Fentes alternées',seconds:40},{label:'Repos',seconds:20},{label:'Mountain climbers',seconds:30},{label:'Repos',seconds:30},{label:'Course progressive',seconds:600},{label:'Gainage',seconds:45},{label:'Repos',seconds:30},{label:'Gainage latéral',seconds:45},{label:'Retour au calme',seconds:300}]},
+{id:'interval30',title:'Fractionné doux — 30 min',duration:30,type:'Fractionné',blocks:[{label:'Échauffement',seconds:600},{label:'Rapide',seconds:60},{label:'Lent',seconds:120},{label:'Rapide',seconds:60},{label:'Lent',seconds:120},{label:'Rapide',seconds:60},{label:'Lent',seconds:120},{label:'Rapide',seconds:60},{label:'Lent',seconds:120},{label:'Retour au calme',seconds:480}]},
+{id:'express20',title:'Séance express — 20 min',duration:20,type:'Express',blocks:[{label:'Échauffement',seconds:180},{label:'Course',seconds:420},{label:'Squats',seconds:45},{label:'Repos',seconds:15},{label:'Fentes',seconds:45},{label:'Repos',seconds:15},{label:'Course',seconds:300},{label:'Gainage',seconds:45},{label:'Retour au calme',seconds:135}]},
+{id:'recovery20',title:'Récupération active — 20 min',duration:20,type:'Récupération',blocks:[{label:'Marche active',seconds:600},{label:'Mobilité douce',seconds:300},{label:'Marche facile',seconds:300}]}
+];
+export const exercises=[
+{name:'Squat',muscles:['quadriceps','fessiers'],difficulty:'facile',video:'https://www.youtube.com/results?search_query=squat+technique+francais',alternatives:['squat sur chaise'],precaution:'Garder les genoux dans l’axe des pieds.'},
+{name:'Fentes',muscles:['quadriceps','fessiers'],difficulty:'moyen',video:'https://www.youtube.com/results?search_query=fentes+technique+francais',alternatives:['fentes arrière'],precaution:'Réduire l’amplitude si inconfort.'},
+{name:'Mountain climbers',muscles:['cardio','gainage'],difficulty:'moyen',video:'https://www.youtube.com/results?search_query=mountain+climber+technique+francais',alternatives:['montées de genoux debout'],precaution:'Rester gainée, rythme contrôlé.'},
+{name:'Gainage',muscles:['sangle abdominale'],difficulty:'facile',video:'https://www.youtube.com/results?search_query=gainage+planche+technique+francais',alternatives:['gainage genoux'],precaution:'Ne pas creuser le bas du dos.'}
+];

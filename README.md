@@ -6,7 +6,7 @@ Application personnelle PWA, mobile-first, pensée d’abord pour iPhone.
 - Navigation à 5 rubriques.
 - Liens d’emploi officiels et suivi de candidatures local.
 - Bibliothèque sportive + vrai mode séance plein écran.
-- 120 questions d’anglais locales, orientées Business English.
+- 100 questions d’anglais locales, orientées Business English.
 - PWA installable, cache applicatif, mode sombre.
 - Socle Firebase et règles privées.
 - Web Push iPhone via Push API standard + Firebase Functions, avec bouton de test.
@@ -63,13 +63,13 @@ Modifier uniquement `app.config.ts`, puis reconstruire. Le nom affiché et le ma
 `src/data/sport.ts`. En production, remplacer les URLs de recherche YouTube par une bibliothèque de vidéos validées une à une.
 
 ## Ajouter des questions d’anglais
-`src/data/englishQuestions.ts`. Chaque objet contient : question, choix, bonne réponse, explication, catégorie, difficulté.
+`src/data/englishQuestions.ts`. La bibliothèque locale fournit 100 questions à partir de notions A2/B1/B2 légères, avec explication, catégorie et difficulté.
 
 ## IA facultative
 `src/services/aiService.ts` définit le contrat. Ne jamais mettre de clé IA dans `VITE_*`; les secrets IA doivent rester dans Firebase Functions/Secret Manager.
 
 ## Sauvegarde / restauration
-Firestore synchronise les données une fois branché. Le mode local actuel utilise `localStorage` pour les candidatures de démonstration. Avant production, le repository devra basculer ces écritures vers Firestore et conserver le local uniquement comme cache de secours.
+Firestore synchronise les candidatures quand Firebase est configuré. Le stockage local reste un cache/repli pour conserver une utilisation partielle hors connexion.
 
 ## Déployer
 ```bash

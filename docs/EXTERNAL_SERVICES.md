@@ -18,7 +18,7 @@ HTTPS nécessaire pour la PWA et le Web Push.
 Nécessaires pour envoyer un rappel même lorsque l’application est fermée. Cela impose le plan Blaze. Pour une seule utilisatrice, le volume attendu reste minuscule, mais un budget/une alerte doit être configuré.
 
 ### GitHub
-Dépôt privé + CI. Le déploiement Firebase Hosting pourra être branché via l’intégration officielle GitHub.
+Dépôt public + CI. Aucune donnée personnelle ni aucun secret ne doit être commité. Le déploiement Firebase Hosting pourra être branché via l’intégration officielle GitHub.
 
 ## Facultatifs
 

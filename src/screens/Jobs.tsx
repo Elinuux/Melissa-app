@@ -32,16 +32,28 @@ export function Jobs() {
   };
 
   return <main>
-    <header><p className="eyebrow">Alternance</p><h1>Trouver une offre</h1><p className="muted">M2 Expert financier · Île-de-France</p></header>
-    <Card>
-      <label>Recherche
-        <select value={queryText} onChange={(event) => setQueryText(event.target.value)}>{suggestedSearches.map((value) => <option key={value}>{value}</option>)}</select>
+    <header className="screen-header">
+      <p className="eyebrow">Alternance</p>
+      <h1>Trouver une offre</h1>
+      <p className="muted">M2 Expert financier · Île-de-France</p>
+    </header>
+
+    <Card className="jobs-search-card">
+      <label className="search-box" aria-label="Recherche d’alternance">
+        <span className="search-icon">⌕</span>
+        <input value={queryText} onChange={(event) => setQueryText(event.target.value)} placeholder="Ex. alternance contrôle de gestion Paris" />
       </label>
-      <div className="platform-grid">{platforms.map((platform) => <a key={platform.name} className="platform" href={platform.url(queryText)} target="_blank" rel="noreferrer">{platform.name}<span>↗</span></a>)}</div>
+      <div className="search-chips" aria-label="Suggestions de recherche">
+        {suggestedSearches.slice(0, 6).map((value) => <button key={value} className={queryText === value ? 'active' : ''} onClick={() => setQueryText(value)}>{value.replace('alternance ', '').replace(' Île-de-France', '').replace(' Paris', '')}</button>)}
+      </div>
+      <p className="section-note">Ouvrir la même recherche sur :</p>
+      <div className="platform-grid">{platforms.map((platform) => <a key={platform.name} className="platform" href={platform.url(queryText)} target="_blank" rel="noreferrer"><span className="platform-name">{platform.name}</span><span className="platform-arrow">↗</span></a>)}</div>
     </Card>
-    <button className="primary sticky-action" onClick={() => setShowForm(true)}>AJOUTER UNE OFFRE</button>
+
+    <button className="primary sticky-action" onClick={() => setShowForm(true)}>＋ AJOUTER UNE OFFRE</button>
     {showForm && <Card><form onSubmit={add} className="stack"><input name="company" placeholder="Entreprise" required/><input name="title" placeholder="Intitulé" required/><input name="url" type="url" placeholder="Lien de l’offre"/><input name="location" placeholder="Localisation"/><button className="primary">Enregistrer</button><button type="button" className="secondary" onClick={() => setShowForm(false)}>Annuler</button></form></Card>}
-    <h2>Mes candidatures</h2>
-    {applications.length === 0 ? <Card><p>Aucune offre enregistrée pour l’instant.</p></Card> : applications.map((application) => <Card key={application.id}><span className="status">{application.status}</span><h3>{application.company}</h3><p>{application.title}</p><small>{application.location}</small></Card>)}
+
+    <div className="section-heading"><div><p className="eyebrow">SUIVI</p><h2>Mes candidatures</h2></div><span className="count-pill">{applications.length}</span></div>
+    {applications.length === 0 ? <Card><p>Aucune offre enregistrée pour l’instant.</p><p className="muted">Dès qu’une offre t’intéresse, ajoute-la ici pour savoir quoi faire ensuite.</p></Card> : applications.map((application) => <Card key={application.id} className="application-card"><span className="status">{application.status}</span><h3>{application.company}</h3><p>{application.title}</p><small>{application.location}</small></Card>)}
   </main>;
 }

@@ -10,7 +10,8 @@
     "test": "vitest run",
     "lint:types": "tsc -b --pretty false",
     "firebase:emulators": "firebase emulators:start",
-    "deploy": "npm run build && firebase deploy --only hosting,firestore:rules,firestore:indexes"
+    "deploy": "npm run build && firebase deploy --only hosting,firestore:rules,firestore:indexes",
+    "h": "firebase deploy --only hosting --project melissa-app-c3eb6"
   },
   "dependencies": {
     "firebase": "^11.0.0",

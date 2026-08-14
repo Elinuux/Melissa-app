@@ -1,6 +1,6 @@
 export const publicAppConfig = {
-  name: 'Mélissa 18h',
-  shortName: 'Mélissa 18h',
+  name: 'Mélissa app',
+  shortName: 'Mélissa app',
   tagline: 'Organise tes soirées sans te prendre la tête.',
   defaultStartHour: '18:00',
   weeklySportTarget: 3,

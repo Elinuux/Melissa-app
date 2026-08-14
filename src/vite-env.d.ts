@@ -10,5 +10,6 @@ interface ImportMetaEnv {
   readonly VITE_FIREBASE_APP_ID?: string;
   readonly VITE_WEB_PUSH_PUBLIC_KEY?: string;
   readonly VITE_AI_ENABLED?: string;
+  readonly VITE_AI_PROVIDER?: 'openai' | 'gemini' | 'claude';
 }
 interface ImportMeta { readonly env: ImportMetaEnv }

@@ -2,6 +2,7 @@ import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth } from 'firebase/auth';
 import { initializeFirestore, memoryLocalCache, persistentLocalCache, type Firestore } from 'firebase/firestore';
 import { getStorage, type FirebaseStorage } from 'firebase/storage';
+import { getFunctions, type Functions } from 'firebase/functions';
 
 const publicFirebaseDefaults = {
   apiKey: 'AIzaSyAoVKxq-iljgyoFn9UtuG8Vpl-kz-JhTrU',
@@ -26,6 +27,7 @@ export let firebaseApp: FirebaseApp | null = null;
 export let auth: Auth | null = null;
 export let db: Firestore | null = null;
 export let storage: FirebaseStorage | null = null;
+export let functions: Functions | null = null;
 
 if (firebaseConfigured) {
   firebaseApp = initializeApp(config);
@@ -36,4 +38,5 @@ if (firebaseConfigured) {
     db = initializeFirestore(firebaseApp, { localCache: memoryLocalCache() });
   }
   storage = getStorage(firebaseApp);
+  functions = getFunctions(firebaseApp, 'europe-west9');
 }

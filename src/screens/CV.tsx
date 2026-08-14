@@ -15,6 +15,7 @@ export function CV() {
   const [suggestions, setSuggestions] = useState<ParsedSuggestion[]>([]);
   const [rawSuggestion, setRawSuggestion] = useState('');
   const [working, setWorking] = useState(false);
+  const [offerText, setOfferText] = useState('');
 
   useEffect(() => { saveCVSections(sections); }, [sections]);
   useEffect(() => {
@@ -50,21 +51,42 @@ export function CV() {
   });
   const addSection = () => setSections((current) => [...current, { id:crypto.randomUUID(), type:'other', title:'Nouvelle section', content:'' }]);
 
-  const improve = async () => {
+  const prepareAI = () => {
     setMessage('');
     setSuggestions([]);
     setRawSuggestion('');
     if (!aiService.available) {
       setMessage('Assistant IA prêt dans l’application, mais aucune clé IA serveur n’est encore activée. Le CV reste entièrement modifiable sans IA.');
-      return;
+      return false;
     }
+    return true;
+  };
+
+  const applyAIResult = (text: string) => {
+    const parsed = parseSuggestions(text);
+    if (parsed.length) setSuggestions(parsed); else setRawSuggestion(text);
+  };
+
+  const improve = async () => {
+    if (!prepareAI()) return;
     setWorking(true);
     try {
       const result = await aiService.improveCV(cvAsText(sections));
-      const parsed = parseSuggestions(result.text);
-      if (parsed.length) setSuggestions(parsed); else setRawSuggestion(result.text);
+      applyAIResult(result.text);
     } catch {
       setMessage('L’assistant IA est momentanément indisponible. Ton CV n’a pas été modifié.');
+    } finally { setWorking(false); }
+  };
+
+  const adaptToOffer = async () => {
+    if (!offerText.trim()) { setMessage('Colle d’abord le texte de l’annonce à laquelle tu veux adapter le CV.'); return; }
+    if (!prepareAI()) return;
+    setWorking(true);
+    try {
+      const result = await aiService.adaptCV(cvAsText(sections), offerText.trim());
+      applyAIResult(result.text);
+    } catch {
+      setMessage('L’adaptation IA est momentanément indisponible. Ton CV n’a pas été modifié.');
     } finally { setWorking(false); }
   };
 
@@ -114,6 +136,13 @@ export function CV() {
       <p className="muted">Il peut proposer des formulations, mots-clés et améliorations, sans inventer de diplôme, d’expérience ou de compétence.</p>
       <button className="primary" onClick={() => void improve()} disabled={working}>{working ? 'ANALYSE…' : 'ANALYSER MON CV'}</button>
       {!aiService.available && <small className="ai-provider-note">OpenAI · Gemini · Claude prêts à être activés côté serveur</small>}
+    </Card>
+
+    <Card className="ai-card offer-adapt-card">
+      <p className="eyebrow">ADAPTATION À UNE OFFRE</p><h2>Adapter mon CV</h2>
+      <p className="muted">Colle le texte de l’annonce. L’assistant ne pourra mieux présenter que des éléments déjà présents dans ton CV.</p>
+      <textarea className="cv-editor offer-textarea" value={offerText} onChange={(event) => setOfferText(event.target.value)} placeholder="Colle ici l’annonce ou les missions principales…" />
+      <button className="primary" onClick={() => void adaptToOffer()} disabled={working}>{working ? 'ANALYSE…' : 'ADAPTER À CETTE OFFRE'}</button>
     </Card>
 
     {suggestions.map((suggestion) => <Card key={`${suggestion.sectionId}-${suggestion.after}`} className="suggestion-card"><p className="eyebrow">PROPOSITION</p><div className="before-after"><div><small>Avant</small><p>{sections.find((section) => section.id === suggestion.sectionId)?.content}</p></div><div><small>Après</small><p>{suggestion.after}</p></div></div>{suggestion.reason && <p className="muted">{suggestion.reason}</p>}<div className="decision-actions"><button className="primary" onClick={() => accept(suggestion)}>ACCEPTER</button><button className="secondary" onClick={() => setSuggestions((current) => current.filter((item) => item !== suggestion))}>REFUSER</button></div></Card>)}

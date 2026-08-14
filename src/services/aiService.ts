@@ -15,6 +15,11 @@ export interface AIService {
 
 const configuredProvider = (import.meta.env.VITE_AI_PROVIDER || 'openai') as AIProvider;
 const enabled = import.meta.env.VITE_AI_ENABLED === 'true' && Boolean(functions);
+const endpointByProvider: Record<AIProvider, string> = {
+  openai: 'aiAssistOpenAI',
+  gemini: 'aiAssistGemini',
+  claude: 'aiAssistClaude',
+};
 
 class FirebaseAIService implements AIService {
   available = enabled;
@@ -22,8 +27,8 @@ class FirebaseAIService implements AIService {
 
   async run(task: AITask, payload: Record<string, unknown>): Promise<AIResult> {
     if (!this.available || !functions) throw new Error('AI_NOT_CONFIGURED');
-    const call = httpsCallable<{ task:AITask; provider:AIProvider; payload:Record<string,unknown> }, AIResult>(functions, 'aiAssist');
-    const response = await call({ task, provider:this.provider, payload });
+    const call = httpsCallable<{ task:AITask; payload:Record<string,unknown> }, AIResult>(functions, endpointByProvider[this.provider]);
+    const response = await call({ task, payload });
     return response.data;
   }
 

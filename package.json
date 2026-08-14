@@ -10,7 +10,7 @@
     "test": "vitest run",
     "lint:types": "tsc -b --pretty false",
     "firebase:emulators": "firebase emulators:start",
-    "deploy": "npm run build && firebase deploy"
+    "deploy": "npm run build && firebase deploy --only hosting,firestore:rules,firestore:indexes"
   },
   "dependencies": {
     "firebase": "^11.0.0",

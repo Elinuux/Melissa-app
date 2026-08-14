@@ -33,17 +33,22 @@ export const sendDueNotifications = onSchedule({ schedule:'every 1 minutes', tim
 type Provider = 'openai' | 'gemini' | 'claude';
 type Task = 'analyse-offer' | 'improve-cv' | 'adapt-cv' | 'interview-prep' | 'english-feedback';
 
-export const aiAssist = onCall({
-  region:'europe-west9',
-  secrets:[openAIKey,geminiKey,anthropicKey],
-  timeoutSeconds:60,
-  memory:'256MiB',
-}, async (request) => {
-  if (!request.auth) throw new HttpsError('unauthenticated', 'Connexion requise pour utiliser l’assistant IA.');
-  const provider = String(request.data?.provider || 'openai') as Provider;
-  const task = String(request.data?.task || '') as Task;
-  const payload = request.data?.payload ?? {};
-  if (!['openai','gemini','claude'].includes(provider)) throw new HttpsError('invalid-argument', 'Provider IA invalide.');
+export const aiAssistOpenAI = onCall({ region:'europe-west9', secrets:[openAIKey], timeoutSeconds:60, memory:'256MiB' }, async (request) =>
+  handleAI('openai', request.auth, request.data));
+
+export const aiAssistGemini = onCall({ region:'europe-west9', secrets:[geminiKey], timeoutSeconds:60, memory:'256MiB' }, async (request) =>
+  handleAI('gemini', request.auth, request.data));
+
+export const aiAssistClaude = onCall({ region:'europe-west9', secrets:[anthropicKey], timeoutSeconds:60, memory:'256MiB' }, async (request) =>
+  handleAI('claude', request.auth, request.data));
+
+async function handleAI(provider: Provider, auth: unknown, data: any) {
+  if (!auth) throw new HttpsError('unauthenticated', 'Connexion requise pour utiliser l’assistant IA.');
+  const task = String(data?.task || '') as Task;
+  const payload = (data?.payload ?? {}) as Record<string, unknown>;
+  if (!['analyse-offer','improve-cv','adapt-cv','interview-prep','english-feedback'].includes(task)) {
+    throw new HttpsError('invalid-argument', 'Tâche IA invalide.');
+  }
   const prompt = buildPrompt(task, payload);
   try {
     const text = provider === 'openai' ? await callOpenAI(prompt) : provider === 'gemini' ? await callGemini(prompt) : await callClaude(prompt);
@@ -52,7 +57,7 @@ export const aiAssist = onCall({
     console.error('AI provider failure', provider, error);
     throw new HttpsError('unavailable', 'Assistant IA temporairement indisponible.');
   }
-});
+}
 
 function buildPrompt(task: Task, payload: Record<string, unknown>): string {
   const safety = `Tu aides Mélissa, étudiante en M2 Expert financier recherchant une alternance en Île-de-France. N'invente jamais une expérience, un diplôme, un logiciel, une compétence, un niveau de langue ou un résultat. Si une information manque, signale-la. Réponds de façon concise et exploitable en français, sauf exercice d'anglais.`;

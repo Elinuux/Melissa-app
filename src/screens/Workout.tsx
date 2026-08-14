@@ -48,8 +48,10 @@ export function Workout({ session, onExit }: { session:SportSession; onExit:()=>
         nextEnd += session.blocks[nextIndex].seconds * 1000;
       }
       if (nextEnd <= current && nextIndex === session.blocks.length - 1) {
-        const accumulated = elapsedBaseMs + (runStartedAt ? current - runStartedAt : 0);
+        const effectiveEnd = nextEnd;
+        const accumulated = elapsedBaseMs + (runStartedAt ? Math.max(0, effectiveEnd - runStartedAt) : 0);
         setElapsedBaseMs(accumulated);
+        setNow(effectiveEnd);
         setRunStartedAt(null);
         setRunning(false);
         setBlockEndsAt(null);

@@ -1,6 +1,6 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth } from 'firebase/auth';
-import { initializeFirestore, memoryLocalCache, persistentLocalCache, persistentSingleTabManager, type Firestore } from 'firebase/firestore';
+import { initializeFirestore, memoryLocalCache, persistentLocalCache, type Firestore } from 'firebase/firestore';
 import { getStorage, type FirebaseStorage } from 'firebase/storage';
 
 const config = {
@@ -20,7 +20,7 @@ if (firebaseConfigured) {
   firebaseApp = initializeApp(config);
   auth = getAuth(firebaseApp);
   try {
-    db = initializeFirestore(firebaseApp, { localCache: persistentLocalCache({ tabManager: persistentSingleTabManager() }) });
+    db = initializeFirestore(firebaseApp, { localCache: persistentLocalCache() });
   } catch {
     db = initializeFirestore(firebaseApp, { localCache: memoryLocalCache() });
   }
